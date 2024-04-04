@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class anim : MonoBehaviour
+{
+    public float speed = 3.0f; // Скорость движения объекта
+    public float amplitude = 2.0f; // Амплитуда движения вверх и вниз
+    public float frequency = 1.0f; // Частота движения
+
+    private float startTime;
+    private Vector3 startPos;
+
+    void Start()
+    {
+        startTime = Time.time;
+        startPos = transform.position;
+    }
+
+    void Update()
+    {
+        float yPos = startPos.y + Mathf.Sin((Time.time - startTime) * frequency) * amplitude;
+        transform.position = new Vector3(transform.position.x, yPos, transform.position.z);
+
+        // Добавляем trail эффект
+        ParticleSystem trailEffect = GetComponent<ParticleSystem>();
+        if (trailEffect)
+        {
+            if (!trailEffect.isPlaying)
+            {
+                trailEffect.Play();
+            }
+        }
+    }
+}
